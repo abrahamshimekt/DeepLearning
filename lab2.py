@@ -2,12 +2,12 @@ import torch
 
 class DenseLayer:
     def __init__(self, n_inputs, n_neurons):
-        self.weights = torch.rand(n_neurons, n_inputs)
-        self.bias = torch.rand(n_neurons)
+        self.weights = torch.randn(n_inputs, n_neurons)
+        self.bias = torch.randn(n_neurons)
         self.output = None
 
     def forward(self, inputs):
-        self.output = torch.matmul(inputs, self.weights.t()) + self.bias
+        self.output = torch.matmul(inputs, self.weights) + self.bias
         return self.output
 
 
@@ -16,11 +16,11 @@ class NeuralNetwork:
         self.hidden_layers = []
         self.output_layer = DenseLayer(n_hidden_neurons[-1], n_classes)
 
-        for i in range(len(n_hidden_neurons)):
+        for i, n_neurons in enumerate(n_hidden_neurons):
             if i == 0:
-                self.hidden_layers.append(DenseLayer(n_features, n_hidden_neurons[i]))
+                self.hidden_layers.append(DenseLayer(n_features, n_neurons))
             else:
-                self.hidden_layers.append(DenseLayer(n_hidden_neurons[i-1], n_hidden_neurons[i]))
+                self.hidden_layers.append(DenseLayer(n_hidden_neurons[i - 1], n_neurons))
 
     def forward(self, inputs):
         x = inputs
